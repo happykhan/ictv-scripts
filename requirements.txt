@@ -1,1 +1,2 @@
+biopython
 python-docx==0.8.10
