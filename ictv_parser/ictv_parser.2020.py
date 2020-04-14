@@ -35,6 +35,7 @@ import logging
 import os
 import sys
 import traceback
+import re
 import time
 import argparse
 
@@ -59,7 +60,15 @@ def get_meta(file_path):
     count = 0
     values['code'] = all_text[all_text.index('Code assigned:') + 1].strip()
     values['title'] = [x for x in all_text if x.startswith('Short title:')][0].replace('\n', ' ').strip()
-    values['title'] = values['title'].encode('utf-8').replace('Short title:', '').replace(' (e.g. "Create six new species in the genus Zetavirus")', '' ).strip()
+    title_group = re.match("Short title:\W+\(e.g..+\) (.+)", values['title'].encode('utf-8', 'replace'))
+    title_no_eg_group = re.match("Short title:\W+(.+)", values['title'].encode('utf-8', 'replace'))
+    if title_group:
+        values['title'] = title_group.group(1)
+    elif title_no_eg_group:
+        values['title'] = title_no_eg_group.group(1)
+    else:
+        print values['title']
+    ## values['title'] = values['title'].encode('utf-8', 'replace').replace('Short title:', '').replace(' (e.g. "Create six new species in the genus Zetavirus")', '' ).strip()
     try:
         values['authors'] = all_text[all_text.index('Provide email address for each author in a single line separated by semi-colons') + 1].replace('\n', ' ').strip()
         if values['authors'].endswith(','):
@@ -79,10 +88,8 @@ def main():
             if app.endswith('.docx'):
                 doc_path = os.path.join(args.app_dir, app)
                 meta = get_meta(doc_path)
-                try:
-                    f.write('\t'.join(meta.values()) + '\n')
-                except:
-                    print meta.values()
+                f.write('\t'.join(meta.values()) + '\n')
+
 
 
 if __name__ == "__main__":
