@@ -2,7 +2,7 @@
 Scripts for parsing ICTV forms
 
 ## How to install 
-** Needs Python 2.7 - because the Docx parser is a bit old. **  
+**Needs Python 2.7 - because the Docx parser is a bit old.**  
 
 ```
 virtualenv   venv -p python2.7 
