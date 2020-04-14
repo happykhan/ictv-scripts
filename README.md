@@ -1,4 +1,4 @@
-# ictvscripts
+# ICTV Scripts
 Scripts for parsing ICTV forms
 
 ## How to install 
