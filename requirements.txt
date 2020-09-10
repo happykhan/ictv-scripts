@@ -1,2 +1,2 @@
-biopython
-python-docx==0.8.10
+biopython==1.78
+numpy==1.19.1
